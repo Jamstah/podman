@@ -86,8 +86,9 @@ func (r *Runtime) Push(ctx context.Context, source, destination string, options 
 		destRef = dockerRef
 	}
 
-	// docker-archive and only DockerV2Schema2MediaType support Gzip compression
-	if options.CompressionFormat != nil &&
+	// docker-archive and DockerV2Schema2MediaType support only Gzip compression
+
+	if options.CompressionFormat != nil && options.CompressionFormat.Name() != "gzip" &&
 		(destRef.Transport().Name() == dockerArchiveTransport.Transport.Name() ||
 			destRef.Transport().Name() == dockerDaemonTransport.Transport.Name() ||
 			options.ManifestMIMEType == manifest.DockerV2Schema2MediaType) {
